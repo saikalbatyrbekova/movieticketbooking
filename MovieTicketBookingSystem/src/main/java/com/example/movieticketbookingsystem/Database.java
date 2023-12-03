@@ -3,6 +3,8 @@ package com.example.movieticketbookingsystem;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Database {
 
@@ -10,14 +12,19 @@ public class Database {
     private static final String username = "postgres";
     private static final String password = "1234";
 
+    public static Connection connectDb() throws SQLException {
+        return DriverManager.getConnection(dbURL, username, password);
+    }
+
     public static void main(String[] args) {
-        try (Connection conn = DriverManager.getConnection(dbURL, username, password)) {
+        Logger logger = Logger.getLogger(Database.class.getName());
+
+        try (Connection conn = connectDb()) {
             System.out.println("Connected to Database");
-            // You can perform database operations here as needed
+
         } catch (SQLException e) {
-            System.out.println("Connection failed. Check the error message:");
-            System.out.println(e.getMessage());
+            logger.log(Level.SEVERE, "Connection failed. Check the error message:", e);
+
         }
     }
 }
-
