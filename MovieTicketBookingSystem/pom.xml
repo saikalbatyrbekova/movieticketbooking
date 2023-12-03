@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>MovieTicketBookingSystem</artifactId>
+    <artifactId>MovieTicketBookingOOP</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>MovieTicketBookingSystem</name>
+    <name>MovieTicketBookingOOP</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,6 +43,11 @@
             <artifactId>fontawesomefx</artifactId>
             <version>8.9</version>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -66,7 +71,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.movieticketbookingsystem/com.example.movieticketbookingsystem.HelloApplication
+                                com.example.movieticketbookingoop/com.example.movieticketbookingsystem.MovieTicket
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
