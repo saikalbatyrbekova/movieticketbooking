@@ -1,9 +1,10 @@
-module com.example.movieticketbookingoop {
+module com.example.movieticketbooking {
     requires javafx.controls;
     requires javafx.fxml;
     requires fontawesomefx;
     requires javafx.graphics;
     requires java.sql;
+    requires java.desktop;
 
 
 
