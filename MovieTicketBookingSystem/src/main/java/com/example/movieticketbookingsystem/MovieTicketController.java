@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,6 +26,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.scene.input.MouseEvent;
+
+
 
 public class MovieTicketController implements Initializable {
 
@@ -145,7 +149,10 @@ public class MovieTicketController implements Initializable {
         }
     }
 
-    public void signin(ActionEvent event) {
+    private double x = 0;
+    private double y = 0;
+
+    public void signin(ActionEvent actionEvent) {
         String sql = "SELECT * FROM admin WHERE username = ? AND password = ?";
 
         try {
@@ -178,6 +185,17 @@ public class MovieTicketController implements Initializable {
                     Stage stage = new Stage();
                     Scene scene = new Scene(root);
 
+                    root.setOnMousePressed((MouseEvent mouseEvent) -> {
+                        x = mouseEvent.getSceneX();
+                        y = mouseEvent.getSceneY();
+                    });
+
+                    root.setOnMouseDragged((MouseEvent mouseEvent) -> {
+                        stage.setX(mouseEvent.getScreenX() - x);
+                        stage.setY(mouseEvent.getScreenY() - y);
+                    });
+                    stage.initStyle(StageStyle.TRANSPARENT);
+
                     stage.setScene(scene);
                     stage.show();
 
@@ -196,6 +214,7 @@ public class MovieTicketController implements Initializable {
             closeDatabaseResources();
         }
     }
+
 
     private void closeDatabaseResources() {
         try {
