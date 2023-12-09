@@ -1,3 +1,4 @@
+
 package com.example.movieticketbookingsystem;
 
 import java.sql.Connection;
@@ -13,7 +14,13 @@ public class Database {
     private static final String password = "1234";
 
     public static Connection connectDb() throws SQLException {
-        return DriverManager.getConnection(dbURL, username, password);
+        try {
+            return DriverManager.getConnection(dbURL, username, password);
+        } catch (SQLException e) {
+            Logger logger = Logger.getLogger(Database.class.getName());
+            logger.log(Level.SEVERE, "Connection failed. Check the error message:", e);
+            throw new SQLException("Failed to connect to the database", e);
+        }
     }
 
     public static void main(String[] args) {
@@ -21,10 +28,8 @@ public class Database {
 
         try (Connection conn = connectDb()) {
             System.out.println("Connected to Database");
-
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Connection failed. Check the error message:", e);
-
+            logger.log(Level.SEVERE, "Connection failed. Error details:", e.getMessage());
         }
     }
 }
