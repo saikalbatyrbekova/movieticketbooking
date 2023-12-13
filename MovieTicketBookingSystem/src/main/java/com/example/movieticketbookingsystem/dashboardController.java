@@ -2,8 +2,6 @@ package com.example.movieticketbookingsystem;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +18,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FilterReader;
 import java.net.URL;
 import java.sql.*;
 import java.sql.Date;
@@ -93,14 +90,19 @@ public class dashboardController implements Initializable {
     @FXML
     private Button availableMovies_buyBtn;
 
-    @FXML
-    private TableColumn<?, ?> availableMovies_col_genre;
+    private ObservableList<moviesData> availableMoviesList;
 
     @FXML
-    private TableColumn<?, ?> availableMovies_col_movieTitle;
+    private TableColumn<moviesData, String> availableMovies_col_genre;
 
     @FXML
-    private TableColumn<?, ?> availableMovies_col_showingDate;
+    private TableColumn<moviesData, String> availableMovies_col_movieTitle;
+
+    @FXML
+    private TableColumn<moviesData, Date> availableMovies_col_showingDate;
+
+    @FXML
+    private TableView<moviesData> availableMovies_tableView;
 
     @FXML
     private Label availableMovies_date;
@@ -108,11 +110,12 @@ public class dashboardController implements Initializable {
     @FXML
     private AnchorPane availableMovies_form;
 
+
     @FXML
     private Label availableMovies_genre;
 
     @FXML
-    private AnchorPane availableMovies_imageView;
+    private ImageView availableMovies_imageView;
 
     @FXML
     private Label availableMovies_label;
@@ -124,7 +127,7 @@ public class dashboardController implements Initializable {
     private Label availableMovies_normalClass_price;
 
     @FXML
-    private Spinner<?> availableMovies_normalClass_quantity;
+    private Spinner<Integer> availableMovies_normalClass_quantity;
 
     @FXML
     private Button availableMovies_selectMovie;
@@ -133,7 +136,7 @@ public class dashboardController implements Initializable {
     private Label availableMovies_specialClass_price;
 
     @FXML
-    private Spinner<?> availableMovies_specialClass_quantity;
+    private Spinner<Integer> availableMovies_specialClass_quantity;
 
     @FXML
     private Label availableMovies_total;
@@ -231,7 +234,6 @@ public class dashboardController implements Initializable {
     @FXML
     private ImageView editScreening_imageView;
 
-
     @FXML
     private Label editScreening_label;
 
@@ -278,6 +280,210 @@ public class dashboardController implements Initializable {
     private Statement statement;
     private ResultSet result;
 
+
+    public SpinnerValueFactory<Integer> spinner1;
+    public SpinnerValueFactory<Integer> spinner2;
+    private float price1 = 0;
+    private float price2 = 0;
+    private float total = 0;
+    private int qty1 = 0;
+    private int qty2 = 0;
+
+    private int num;
+    private int qty;
+
+    public void buy() throws SQLException {
+        String sql = "INSERT INTO customer (type,quantity,total,date) VALUES(?,?,?,?)";
+
+        connect = database.connectDb();
+        String type = null;
+        if(price1 > 0 && price2 == 0){
+            type = "VIP Class";
+        }else if(price2 > 0 && price1 == 0){
+            type = "Normal Class";
+        }else if(price2 > 0 && price1 > 0){
+            type = "VIP & Normal Class";
+        }
+        LocalDate currentDate = LocalDate.now();
+        java.sql.Date setDate = java.sql.Date.valueOf(currentDate);
+
+
+        try{
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, type);
+            prepare.setInt(2, qty);
+            prepare.setDouble(3, total);
+            prepare.setDate(4, setDate);
+
+
+            Alert alert;
+            if(availableMovies_imageView.getImage() == null
+            || availableMovies_ttitle.getText().isEmpty()){
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please select the movie first!");
+                alert.showAndWait();
+            }else if(price1 == 0 && price2 == 0)
+            {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please indicate the quantity of tickets.");
+                alert.showAndWait();
+            }else {
+                prepare.executeUpdate();
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Successfully purchased a ticket!");
+                alert.showAndWait();
+
+
+                String sql1 = "SELECT * FROM customer";
+
+                prepare = connect.prepareStatement(sql1);
+                result = prepare.executeQuery();
+
+                int num = 0;
+                qty = qty1 + qty2;
+
+                while(result.next()){
+                    num = result.getInt("id");
+                }
+                String sql2 = "INSERT INTO customer_info (type, total, quantity, movie_title) VALUES (?, ?, ?, ?)";
+                prepare = connect.prepareStatement(sql2);
+                prepare.setString(1, type);
+                prepare.setDouble(2, total);
+                prepare.setInt(3, qty);
+                prepare.setString(4, availableMovies_ttitle.getText());
+                prepare.execute();
+
+
+                clearPurchaseTicketInfo();
+            }
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    public void clearPurchaseTicketInfo(){
+        spinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10, 0);
+        spinner2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10, 0);
+
+        availableMovies_specialClass_quantity.setValueFactory(spinner1);
+        availableMovies_normalClass_quantity.setValueFactory(spinner2);
+
+        availableMovies_specialClass_price.setText("0.0 som");
+        availableMovies_normalClass_price.setText("0.0 som");
+        availableMovies_total.setText("0.0 som");
+
+    }
+    public void showSpinnerValue(){
+        spinner1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10, 0);
+        spinner2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10, 0);
+
+        availableMovies_specialClass_quantity.setValueFactory(spinner1);
+        availableMovies_normalClass_quantity.setValueFactory(spinner2);
+    }
+
+    public void getSpinnerValue(MouseEvent event) {
+        qty1 = availableMovies_specialClass_quantity.getValue();
+        qty2 = availableMovies_normalClass_quantity.getValue();
+
+        price1 = (qty1 * 500);
+        price2 = (qty2 * 150);
+
+        total = (price1 + price2);
+
+        availableMovies_specialClass_price.setText(String.valueOf(price1)+" som");
+        availableMovies_normalClass_price.setText(String.valueOf(price2)+" som");
+        availableMovies_total.setText(String.valueOf(String.valueOf(total)+" som"));
+    }
+
+
+
+    public ObservableList<moviesData> availableMoviesList() throws SQLException {
+        ObservableList<moviesData> listAvMovies = FXCollections.observableArrayList();
+
+        String sql = "SELECT * FROM movie";
+        connect = database.connectDb();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                moviesData movD = new moviesData(
+                        result.getInt("id"),
+                        result.getString("movie_title"),
+                        result.getString("genre"),
+                        result.getString("duration"),
+                        result.getString("image"),
+                        result.getDate("date"),
+                        result.getString("current"));
+
+                listAvMovies.add(movD);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (result != null) result.close();
+            if (prepare != null) prepare.close();
+            if (connect != null) connect.close();
+        }
+
+        return listAvMovies;
+    }
+
+    public void showAvailableMovies() {
+        try {
+            if (availableMoviesList == null) {
+                availableMoviesList = availableMoviesList();
+            }
+
+            availableMovies_col_movieTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+            availableMovies_col_genre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+            availableMovies_col_showingDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+            availableMovies_tableView.setItems(availableMoviesList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void selectAvailableMovies(){
+        moviesData movD = availableMovies_tableView.getSelectionModel().getSelectedItem();
+        int num = availableMovies_tableView.getSelectionModel().getFocusedIndex();
+
+        if((num -1) < -1) {
+            return;
+        }
+
+        availableMovies_movieTitle.setText(movD.getTitle());
+        availableMovies_genre.setText(movD.getGenre());
+        availableMovies_date.setText(String.valueOf(movD.getDate()));
+
+        getData.path = movD.getImage();
+
+    }
+
+    public void selectMovie(){
+
+        moviesData movD = availableMovies_tableView.getSelectionModel().getSelectedItem();
+        int num = availableMovies_tableView.getSelectionModel().getFocusedIndex();
+
+        String uri = "file:" + getData.path;
+
+        image = new Image(uri,132,170,false,true);
+        availableMovies_imageView.setImage(image);
+
+        availableMovies_ttitle.setText(movD.getTitle());
+
+        availableMovies_movieTitle.setText("");
+        availableMovies_genre.setText("");
+        availableMovies_date.setText("");
+
+    }
+
     private String[] currentList = {"Showing", "End Showing"};
 
     public void comboBox(){
@@ -304,8 +510,8 @@ public class dashboardController implements Initializable {
             Alert alert;
 
             if(editScreening_title.getText().isEmpty()
-            || editScreening_imageView.getImage() == null
-            || editScreening_current.getSelectionModel().isEmpty()){
+                    || editScreening_imageView.getImage() == null
+                    || editScreening_current.getSelectionModel().isEmpty()){
 
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
@@ -330,9 +536,6 @@ public class dashboardController implements Initializable {
     public void clearEditScreening(){
         editScreening_title.setText("");
         editScreening_imageView.setImage(null);
-        //editScreening_current.setSelectionModel(null);
-
-
     }
 
     public void selectEditScreening(){
@@ -365,15 +568,15 @@ public class dashboardController implements Initializable {
 
             moviesData movD;
             while(result.next()) {
-                    movD = new moviesData(result.getInt("id"),
-                            result.getString("movie_title"),
-                            result.getString("genre"),
-                            result.getString("duration"),
-                            result.getString("image"),
-                            result.getDate("date"),
-                            result.getString("current"));
+                movD = new moviesData(result.getInt("id"),
+                        result.getString("movie_title"),
+                        result.getString("genre"),
+                        result.getString("duration"),
+                        result.getString("image"),
+                        result.getDate("date"),
+                        result.getString("current"));
 
-                    editSList.add(movD);
+                editSList.add(movD);
 
             }
 
@@ -421,7 +624,7 @@ public class dashboardController implements Initializable {
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
             if (result.next()) {
-                getData.movieId = result.getInt(1); // Use the index 1 for the first column
+                getData.movieId = result.getInt(1);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -441,7 +644,7 @@ public class dashboardController implements Initializable {
         String sql1 = "SELECT movie_title FROM movie WHERE movie_title = ?";
         Alert alert;
 
-        try (Connection connect = Database.connectDb();  // Open the connection in a try-with-resources block
+        try (Connection connect = Database.connectDb();
              PreparedStatement checkStatement = connect.prepareStatement(sql1)) {
 
             checkStatement.setString(1, addMovies_movieTitle.getText());
@@ -487,7 +690,15 @@ public class dashboardController implements Initializable {
                         alert.setContentText("Successfully added a new movie!");
                         alert.showAndWait();
 
-                        showAddMoviesList();
+                        listAddMovies.add(new moviesData(getData.movieId + 1,
+                                addMovies_movieTitle.getText(),
+                                addMovies_genre.getText(),
+                                addMovies_duration.getText(),
+                                uri,
+                                sqlDate,
+                                "Showing"));
+
+                        addMovies_tableView.setItems(listAddMovies);
                         clearAddMovieList();
 
                     } catch (SQLException e) {
@@ -500,11 +711,12 @@ public class dashboardController implements Initializable {
         }
     }
 
+
     public void updateAddMovieList() {
         String sql = "UPDATE movie SET movie_title = ?, genre = ?, duration = ?, image = ?, date = ? WHERE id = ?";
         String uri = getData.path.replace("\\", "\\\\");
 
-        try (Connection connect = Database.connectDb();  // Open the connection in a try-with-resources block
+        try (Connection connect = Database.connectDb();
              PreparedStatement statement = connect.prepareStatement(sql)) {
 
             statement.setString(1, addMovies_movieTitle.getText());
@@ -522,7 +734,18 @@ public class dashboardController implements Initializable {
             alert.setContentText("Successfully updated " + addMovies_movieTitle.getText());
             alert.showAndWait();
 
-            showAddMoviesList();
+            for (moviesData movie : listAddMovies) {
+                if (movie.getId() == getData.movieId) {
+                    movie.setTitle(addMovies_movieTitle.getText());
+                    movie.setGenre(addMovies_genre.getText());
+                    movie.setDuration(addMovies_duration.getText());
+                    movie.setImage(uri);
+                    movie.setDate(sqlDate);
+                    break;
+                }
+            }
+
+            addMovies_tableView.refresh();
             clearAddMovieList();
 
         } catch (SQLException e) {
@@ -530,43 +753,46 @@ public class dashboardController implements Initializable {
         }
     }
 
-    public void deleteAddMovies() throws SQLException {
+
+    public void deleteAddMovies() {
         String sql = "DELETE FROM movie WHERE movie_title = '"
                 + addMovies_movieTitle.getText() + "' ";
 
-        connect = database.connectDb();
+        try {
 
-        try{
+            if (connect == null || connect.isClosed()) {
+                connect = database.connectDb();
+            }
+
             statement = connect.createStatement();
-
             Alert alert;
 
-
-            if(addMovies_movieTitle.getText().isEmpty()
+            if (addMovies_movieTitle.getText().isEmpty()
                     || addMovies_genre.getText().isEmpty()
                     || addMovies_duration.getText().isEmpty()
                     || addMovies_date.getValue() == null
                     || addMovies_imageView.getImage() == null) {
 
-                alert = new Alert (Alert.AlertType.ERROR);
+                alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
                 alert.setContentText("Please select the movie first");
                 alert.showAndWait();
 
-            }else{
-
+            } else {
                 alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation Message");
                 alert.setHeaderText(null);
-                alert.setContentText("Are you sure to delete " + addMovies_movieTitle.getText()  + "?");
+                alert.setContentText("Are you sure to delete " + addMovies_movieTitle.getText() + "?");
 
                 Optional<ButtonType> option = alert.showAndWait();
 
-                if(ButtonType.OK.equals(option.get())) {
-
+                if (ButtonType.OK.equals(option.get())) {
                     statement.executeUpdate(sql);
-                    showAddMoviesList();
+
+                    listAddMovies.remove(addMovies_tableView.getSelectionModel().getSelectedIndex());
+
+                    addMovies_tableView.setItems(listAddMovies);
                     clearAddMovieList();
 
                     alert = new Alert((Alert.AlertType.INFORMATION));
@@ -575,14 +801,25 @@ public class dashboardController implements Initializable {
                     alert.setContentText("Successfully deleted!");
                     alert.showAndWait();
 
-                }else{
+                } else {
                     return;
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
 
-
-        }catch(Exception e) {e.printStackTrace();}
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+
     public void clearAddMovieList(){
         addMovies_movieTitle.setText("");
         addMovies_genre.setText("");
@@ -614,13 +851,11 @@ public class dashboardController implements Initializable {
                         result.getDate("date"),
                         result.getString("current"));
 
-                listAddMovies.add(movD);  // This line is causing the NullPointerException
+                listAddMovies.add(movD);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            // ... (your existing cleanup code)
         }
         return listData;
     }
@@ -700,9 +935,7 @@ public class dashboardController implements Initializable {
             availableMovies_form.setVisible(false);
             editScreening_form.setVisible(false);
             customers_form.setVisible(false);
-        }
-
-        if (event.getSource() == addMovies_btn) {
+        }if (event.getSource() == addMovies_btn) {
             dashboard_form.setVisible(false);
             addMovies_form.setVisible(true);
             availableMovies_form.setVisible(false);
@@ -749,18 +982,24 @@ public class dashboardController implements Initializable {
         try {
             displayUsername();
 
-            // Ensure listAddMovies is initialized before calling showAddMoviesList
             if (listAddMovies == null) {
-                listAddMovies = FXCollections.observableArrayList(); // Initialize the list
-                listAddMovies.addAll(addMoviesList()); // Add data from addMoviesList
+                listAddMovies = FXCollections.observableArrayList();
+                listAddMovies.addAll(addMoviesList());
             }
 
             showAddMoviesList();
             showEditScreening();
+            showAvailableMovies();
             comboBox();
+            showSpinnerValue();
+            getSpinnerValue();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getSpinnerValue() {
     }
 
 }
