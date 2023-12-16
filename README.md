@@ -18,3 +18,5 @@ Team Members List: Batyrbekova Saikal COM-22-A
 
 Roles of Group Members: Batyrbekova Saikal is responsible for coding, presentation, GUI, MVC, database, video-tutorial.
 
+VIDEO-TUTORIAL, PRESENTATION, SCREENSHOTS: https://drive.google.com/drive/u/0/folders/1hOCdqxMbMl8P_dV_N2FkuMUB3U6OB4jP
+
