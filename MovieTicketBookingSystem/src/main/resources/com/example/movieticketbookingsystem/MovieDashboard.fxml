@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
@@ -12,15 +13,15 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.movieticketbookingsystem.MovieTicketController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.movieticketbookingsystem.dashboardController">
    <children>
       <BorderPane layoutX="166.0" layoutY="134.0" prefHeight="600.0" prefWidth="1002.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <AnchorPane prefHeight="44.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane layoutX="188.0" layoutY="-70.0" prefHeight="38.0" prefWidth="1000.0" style="-fx-background-color: white; -fx-border-width: .2px .2px .4px .2px; -fx-border-color: #000;" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="topForm" layoutX="188.0" layoutY="-70.0" prefHeight="38.0" prefWidth="1000.0" style="-fx-background-color: white; -fx-border-width: .2px .2px .4px .2px; -fx-border-color: #000;" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Button fx:id="close" layoutX="961.0" layoutY="6.0" mnemonicParsing="false" onAction="#close" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 30px;" text="  x  " textFill="WHITE" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                        <Button fx:id="close" layoutX="961.0" layoutY="6.0" mnemonicParsing="false" onAction="#close" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 30px;" text="  x  " textFill="WHITE" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                            <font>
                               <Font name="Beirut Regular" size="13.0" />
                            </font>
@@ -30,12 +31,12 @@
                               <Font name="Beirut Regular" size="13.0" />
                            </font>
                         </Label>
-                        <Label layoutX="15.0" layoutY="6.0" prefHeight="0.0" prefWidth="17.0" text="▶" textFill="#ed5ab3" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0">
+                        <Label layoutX="15.0" layoutY="6.0" prefHeight="0.0" prefWidth="17.0" text="▶" textFill="#5c8374" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Button fx:id="minimize" layoutX="933.0" layoutY="-1.0" mnemonicParsing="false" onAction="#signUp_minimize" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 30px;" text="—" textFill="WHITE" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="5.0">
+                        <Button fx:id="minimize" layoutX="933.0" layoutY="-1.0" mnemonicParsing="false" onAction="#minimize" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 30px;" text="—" textFill="WHITE" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="5.0">
                            <font>
                               <Font name="Beirut Regular" size="13.0" />
                            </font>
@@ -46,9 +47,9 @@
             </AnchorPane>
          </top>
          <left>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(0, 27, 121);" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(9, 38, 53);" BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="CENTER" layoutX="58.0" layoutY="94.0" text="Welcome" textFill="WHITE">
+                  <Label alignment="CENTER" layoutX="58.0" layoutY="94.0" text="Welcome," textFill="WHITE">
                      <font>
                         <Font name="Microsoft Sans Serif" size="17.0" />
                      </font>
@@ -58,12 +59,12 @@
                         <Font name="Beirut Regular" size="20.0" />
                      </font>
                   </Label>
-                  <Button fx:id="dashboard_btn" layoutX="15.0" layoutY="171.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(22, 64, 214); -fx-background-radius: 20px;" text="Dashboard" textFill="#fcfcfc" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="190.0" />
-                  <Button fx:id="addMovies_btn" layoutX="10.0" layoutY="198.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(22, 64, 214); -fx-background-radius: 20px;" text="Add Movies" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="220.0" />
-                  <Button fx:id="availableMovies_btn" layoutX="12.0" layoutY="256.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(22, 64, 214); -fx-background-radius: 20px;" text="Available Movies" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="250.0" />
-                  <Button fx:id="editScreening_btn" layoutX="10.0" layoutY="282.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(22, 64, 214); -fx-background-radius: 20px;" text="Edit Screening" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="280.0" />
-                  <Button fx:id="customers_btn" layoutX="10.0" layoutY="308.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(22, 64, 214); -fx-background-radius: 20px;" text="Customers" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="310.0" />
-                  <Button fx:id="signout" layoutX="30.0" layoutY="472.0" mnemonicParsing="false" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="x" textFill="WHITE">
+                  <Button fx:id="dashboard_btn" layoutX="15.0" layoutY="171.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Dashboard" textFill="#fcfcfc" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="190.0" />
+                  <Button fx:id="addMovies_btn" layoutX="10.0" layoutY="198.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Add Movies" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="220.0" />
+                  <Button fx:id="availableMovies_btn" layoutX="12.0" layoutY="256.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Available Movies" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="250.0" />
+                  <Button fx:id="editScreening_btn" layoutX="10.0" layoutY="282.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Edit Screening" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="280.0" />
+                  <Button fx:id="customers_btn" layoutX="10.0" layoutY="308.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="26.0" prefWidth="170.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Customers" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="310.0" />
+                  <Button fx:id="signout" layoutX="30.0" layoutY="472.0" mnemonicParsing="false" onAction="#logOut" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="x" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -79,46 +80,46 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="dashboard_form" layoutX="141.0" layoutY="56.0" prefHeight="556.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="dashboard_form" layoutX="141.0" layoutY="56.0" prefHeight="556.0" prefWidth="800.0" style="-fx-background-color: rgb(158, 200, 185);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <AnchorPane layoutX="19.0" layoutY="9.0" prefHeight="187.0" prefWidth="763.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: white; -fx-background-radius: 8px;">
                            <children>
-                              <AnchorPane fx:id="dashboard_totalSoldTicket" layoutX="20.0" layoutY="20.0" prefHeight="150.0" prefWidth="224.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(237, 90, 179); -fx-background-radius: 8px;">
+                              <AnchorPane layoutX="20.0" layoutY="20.0" prefHeight="150.0" prefWidth="224.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(27, 66, 66); -fx-background-radius: 8px;">
                                  <children>
                                     <Label layoutX="33.0" layoutY="38.0" text="Total Sold Ticket" textFill="WHITE">
                                        <font>
                                           <Font name="Beirut Regular" size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="dashboard_totalSoldTicket" layoutX="69.0" layoutY="51.0" text="1500" textFill="WHITE">
+                                    <Label fx:id="dashboard_totalSoldTicket" layoutX="94.0" layoutY="56.0" text="15" textFill="WHITE" AnchorPane.bottomAnchor="23.0">
                                        <font>
                                           <Font name="Beirut Regular" size="60.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane fx:id="dashboard_totalEarnMoney" layoutX="270.0" layoutY="19.0" prefHeight="150.0" prefWidth="224.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(22, 64, 214); -fx-background-radius: 8px;">
+                              <AnchorPane layoutX="270.0" layoutY="19.0" prefHeight="150.0" prefWidth="224.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(92, 131, 116); -fx-background-radius: 8px;">
                                  <children>
                                     <Label layoutX="35.0" layoutY="36.0" text="Total Earn Today" textFill="WHITE">
                                        <font>
                                           <Font name="Beirut Regular" size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="dashboard_totalEarnMoney" layoutX="74.0" layoutY="50.0" text="1500" textFill="WHITE">
+                                    <Label fx:id="dashboard_totalEarnMoney" layoutX="59.0" layoutY="53.0" text="1500" textFill="WHITE" AnchorPane.bottomAnchor="23.0">
                                        <font>
                                           <Font name="Beirut Regular" size="60.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane fx:id="dashboard_availableMovies" layoutX="520.0" layoutY="16.0" prefHeight="152.0" prefWidth="224.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(237, 90, 179); -fx-background-radius: 8px;">
+                              <AnchorPane layoutX="520.0" layoutY="16.0" prefHeight="152.0" prefWidth="224.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(27, 66, 66); -fx-background-radius: 8px;">
                                  <children>
                                     <Label layoutX="35.0" layoutY="41.0" text="Available Movies" textFill="WHITE">
                                        <font>
                                           <Font name="Beirut Regular" size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="dashboard_availableMovies" layoutX="72.0" layoutY="53.0" text="1500" textFill="WHITE">
+                                    <Label fx:id="dashboard_availableMovies" layoutX="92.0" layoutY="60.0" text="15" textFill="WHITE" AnchorPane.bottomAnchor="23.0">
                                        <font>
                                           <Font name="Beirut Regular" size="60.0" />
                                        </font>
@@ -127,19 +128,44 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="19.0" layoutY="207.0" prefHeight="322.0" prefWidth="764.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-radius: 8px;" />
+                        <AnchorPane layoutX="60.0" layoutY="223.0" prefHeight="282.0" prefWidth="694.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;">
+                           <children>
+                              <Label layoutX="98.0" layoutY="97.0" prefHeight="63.0" prefWidth="576.0" text="Movie Booking System" textFill="WHITE">
+                                 <font>
+                                    <Font name="Beirut Regular" size="48.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="183.0" layoutY="57.0" prefHeight="30.0" prefWidth="431.0" text="Java OOP and Database Final Project" textFill="WHITE">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="24.0" layoutY="191.0" prefHeight="30.0" prefWidth="611.0" text="Lecturers: Zhenishbek Orozakhunov, Zhavlon Khamidov" textFill="WHITE" AnchorPane.leftAnchor="24.0">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="20.0" layoutY="219.0" prefHeight="30.0" prefWidth="611.0" text="Student: Saikal Batyrbekova, COM-22-A" textFill="WHITE" AnchorPane.leftAnchor="24.0">
+                                 <font>
+                                    <Font name="Microsoft Sans Serif" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children></AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="addMovies_form" layoutX="124.0" layoutY="96.0" prefHeight="556.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="addMovies_form" layoutX="124.0" layoutY="96.0" prefHeight="556.0" prefWidth="800.0" style="-fx-background-color: rgb(158, 200, 185);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <AnchorPane layoutX="16.0" layoutY="8.0" prefHeight="533.0" prefWidth="262.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: white; -fx-background-radius: 8px;">
                            <children>
-                              <AnchorPane fx:id="addMovies_imageView" layoutX="64.0" layoutY="16.0" prefHeight="192.0" prefWidth="153.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-radius: 8px;">
+                              <AnchorPane layoutX="64.0" layoutY="16.0" prefHeight="192.0" prefWidth="153.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-radius: 8px;">
                                  <children>
                                     <ImageView fx:id="addMovies_imageView" fitHeight="177.0" fitWidth="141.0" layoutX="6.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
-                              <Button fx:id="addMovies_import" layoutX="110.0" layoutY="224.0" mnemonicParsing="false" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="Import" textFill="WHITE" />
+                              <Button fx:id="addMovies_import" layoutX="103.0" layoutY="218.0" mnemonicParsing="false" onAction="#importImage" prefHeight="32.0" prefWidth="77.0" style="-fx-background-color: rgb(27, 66, 66); -fx-background-radius: 20px;" text="Import" textFill="WHITE">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Button>
                               <Label layoutX="22.0" layoutY="279.0" text="Movie Title:" AnchorPane.leftAnchor="22.0">
                                  <font>
                                     <Font size="14.0" />
@@ -148,7 +174,6 @@
                               <TextField fx:id="addMovies_movieTitle" layoutX="99.0" layoutY="275.0" prefHeight="26.0" prefWidth="152.0" style="-fx-background-radius: 0px 10px 0px 0px;" AnchorPane.leftAnchor="100.0" />
                               <TextField fx:id="addMovies_genre" layoutX="100.0" layoutY="314.0" prefHeight="26.0" prefWidth="152.0" style="-fx-background-radius: 0px 10px 0px 0px;" AnchorPane.leftAnchor="100.0" />
                               <TextField fx:id="addMovies_duration" layoutX="93.0" layoutY="353.0" prefHeight="26.0" prefWidth="152.0" style="-fx-background-radius: 0px 10px 0px 0px;" AnchorPane.leftAnchor="100.0" />
-                              <TextField fx:id="addMovies_date" layoutX="98.0" layoutY="394.0" prefHeight="26.0" prefWidth="152.0" AnchorPane.leftAnchor="100.0" />
                               <Label layoutX="46.0" layoutY="318.0" text="Genre:" AnchorPane.leftAnchor="50.0">
                                  <font>
                                     <Font size="14.0" />
@@ -160,15 +185,16 @@
                                  </font>
                               </Label>
                               <Label layoutX="7.0" layoutY="398.0" text="Published Date:" />
-                              <Button fx:id="addMovies_insertBtn" layoutX="51.0" layoutY="446.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="Insert" textFill="WHITE" />
-                              <Button fx:id="addMovies_updateBtn" layoutX="149.0" layoutY="446.0" mnemonicParsing="false" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="Update" textFill="WHITE" />
-                              <Button fx:id="addMovies_deleteBtn" layoutX="51.0" layoutY="484.0" mnemonicParsing="false" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="Delete" textFill="WHITE" />
-                              <Button fx:id="addMovies_clearBtn" layoutX="150.0" layoutY="484.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="Clear" textFill="WHITE" />
+                              <Button fx:id="addMovies_insertBtn" layoutX="51.0" layoutY="446.0" mnemonicParsing="false" onAction="#insertAddMovies" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Insert" textFill="WHITE" />
+                              <Button fx:id="addMovies_updateBtn" layoutX="149.0" layoutY="446.0" mnemonicParsing="false" onAction="#updateAddMovieList" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Update" textFill="WHITE" />
+                              <Button fx:id="addMovies_deleteBtn" layoutX="51.0" layoutY="484.0" mnemonicParsing="false" onAction="#deleteAddMovies" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Delete" textFill="WHITE" />
+                              <Button fx:id="addMovies_clearBtn" layoutX="150.0" layoutY="484.0" mnemonicParsing="false" onAction="#clearAddMovieList" prefHeight="26.0" prefWidth="55.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Clear" textFill="WHITE" />
+                              <DatePicker fx:id="addMovies_date" layoutX="115.0" layoutY="393.0" prefHeight="26.0" prefWidth="152.0" promptText="YYYY-MM-DD" style="-fx-background-radius: 0px 10px 0px 0px;" AnchorPane.leftAnchor="100.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="290.0" layoutY="9.0" prefHeight="533.0" prefWidth="493.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-radius: 8px; -fx-background-color: white;">
                            <children>
-                              <TableView fx:id="addMovies_tableView" layoutX="9.0" layoutY="52.0" prefHeight="466.0" prefWidth="476.0" style="-fx-background-radius: 8px;">
+                              <TableView fx:id="addMovies_tableView" layoutX="6.0" layoutY="27.0" onMouseClicked="#selectAddMoviesList" prefHeight="466.0" prefWidth="476.0" style="-fx-background-radius: 8px;">
                                 <columns>
                                   <TableColumn fx:id="addMovies_col_movieTitle" prefWidth="150.04949951171875" style="-fx-background-color: rgb(22, 64, 214) rgb(22, 64, 214); &quot; text=&quot;Dashboard&quot; textFill=&quot;#fcfcfc&quot; xmlns=&quot;http: //javafx.com/javafx/21&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; /&gt;;" text="Movie Title:" />
                                   <TableColumn fx:id="addMovies_col_genre" prefWidth="99.97271728515625" text="Genre:" />
@@ -176,16 +202,15 @@
                                     <TableColumn fx:id="addMovies_col_date" prefWidth="104.5528564453125" text="Published Date:" />
                                 </columns>
                               </TableView>
-                              <TextField fx:id="addMovies_search" layoutX="25.0" layoutY="17.0" prefHeight="26.0" prefWidth="240.0" promptText="Search.." style="-fx-background-radius: 0px 10px 0px 0px;" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="availableMovies_form" layoutX="118.0" layoutY="78.0" prefHeight="556.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="availableMovies_form" layoutX="118.0" layoutY="78.0" prefHeight="556.0" prefWidth="800.0" style="-fx-background-color: rgb(158, 200, 185);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane layoutX="13.0" layoutY="9.0" prefHeight="200.0" prefWidth="774.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: white; -fx-background-radius: 8px;">
+                        <AnchorPane layoutX="13.0" layoutY="9.0" prefHeight="200.0" prefWidth="774.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(158, 200, 185); -fx-background-radius: 8px;">
                            <children>
-                              <AnchorPane prefHeight="201.0" prefWidth="231.0" style="-fx-border-radius: 8px 0px 0px 8px; -fx-background-radius: 8px 0px 0px 8px; -fx-border-color: blue; -fx-background-color: rgb(22, 64, 214);">
+                              <AnchorPane prefHeight="201.0" prefWidth="231.0" style="-fx-border-radius: 8px 0px 0px 8px; -fx-background-radius: 8px 0px 0px 8px; -fx-border-color: rgb(9, 38, 53); -fx-background-color: rgb(92, 131, 116);">
                                  <children>
                                     <Label layoutX="16.0" layoutY="26.0" text="Movie Title:" textFill="WHITE" AnchorPane.leftAnchor="20.0">
                                        <font>
@@ -217,35 +242,30 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="availableMovies_selectMovie" layoutX="66.0" layoutY="124.0" mnemonicParsing="false" style="-fx-background-radius: 20px; -fx-background-color: rgb(237, 90, 179);" text="Select Movie" textFill="WHITE" />
+                                    <Button fx:id="availableMovies_selectMovie" layoutX="66.0" layoutY="124.0" mnemonicParsing="false" onAction="#selectMovie" style="-fx-background-radius: 20px; -fx-background-color: rgb(27, 66, 66);" text="Select Movie" textFill="WHITE" />
                                  </children>
                               </AnchorPane>
-                              <TableView layoutX="234.0" prefHeight="201.0" prefWidth="541.0">
+                              <TableView fx:id="availableMovies_tableView" layoutX="234.0" onMouseClicked="#selectAvailableMovies" prefHeight="201.0" prefWidth="541.0">
                                 <columns>
-                                  <TableColumn fx:id="availableMovies_col_movieTitle" prefWidth="186.10519409179688" text="Movie Title" />
-                                  <TableColumn fx:id="availableMovies_col_genre" prefWidth="216.89483642578125" text="Genre" />
-                                    <TableColumn fx:id="availableMovies_col_showingDate" prefWidth="137.98828125" text="Showing Date" />
+                                   <TableColumn fx:id="availableMovies_col_movieTitle" prefWidth="186.10519409179688" text="Movie Title" />
+                                   <TableColumn fx:id="availableMovies_col_genre" prefWidth="216.89483642578125" text="Genre" />
+                                   <TableColumn fx:id="availableMovies_col_showingDate" prefWidth="137.98828125" text="Showing Date" />
                                 </columns>
                               </TableView>
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="13.0" layoutY="228.0" prefHeight="312.0" prefWidth="775.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: white; -fx-background-radius: 8px;">
                            <children>
-                              <AnchorPane prefHeight="312.0" prefWidth="232.0" style="-fx-border-radius: 8px 0px 0px 8px; -fx-border-color: blue; -fx-background-color: rgb(22, 64, 214);">
+                              <AnchorPane prefHeight="312.0" prefWidth="232.0" style="-fx-border-radius: 8px 0px 0px 8px; -fx-border-color: rgb(9, 38, 53); -fx-background-color: rgb(92, 131, 116); -fx-background-radius: 8px 0px 0px 8px;">
                                  <children>
-                                    <AnchorPane fx:id="availableMovies_imageView" layoutX="29.0" layoutY="32.0" prefHeight="192.0" prefWidth="153.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-radius: 8px;">
+                                    <AnchorPane layoutX="29.0" layoutY="32.0" prefHeight="192.0" prefWidth="153.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-radius: 8px;">
                                        <children>
-                                          <ImageView fitHeight="177.0" fitWidth="141.0" layoutX="28.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="availableMovies_imageView" fitHeight="170.0" fitWidth="132.0" layoutX="11.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </AnchorPane>
-                                    <Label fx:id="availableMovies_label" layoutX="92.0" layoutY="241.0" text="Label" textFill="WHITE">
+                                    <Label fx:id="availableMovies_ttitle" graphicTextGap="0.0" layoutX="37.0" layoutY="238.0" text="Label" textFill="WHITE" AnchorPane.leftAnchor="37.0">
                                        <font>
-                                          <Font name="Beirut Regular" size="18.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="availableMovies_ttitle" layoutX="100.0" layoutY="266.0" text="Title" textFill="WHITE">
-                                       <font>
-                                          <Font size="15.0" />
+                                          <Font name="Microsoft Sans Serif" size="19.0" />
                                        </font>
                                     </Label>
                                  </children>
@@ -255,32 +275,32 @@
                                     <Font name="Beirut Regular" size="24.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="583.0" layoutY="64.0" text="Price (SOM)">
+                              <Label layoutX="583.0" layoutY="64.0" text="Price (som)" AnchorPane.leftAnchor="570.0">
                                  <font>
                                     <Font name="Beirut Regular" size="24.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="264.0" layoutY="17.0" text="Purchase Ticket">
+                              <Label layoutX="264.0" layoutY="17.0" text="Purchase Ticket" AnchorPane.leftAnchor="260.0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="259.0" layoutY="106.0" text="VIP Class">
+                              <Label layoutX="259.0" layoutY="106.0" text="VIP Class" AnchorPane.leftAnchor="260.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="260.0" layoutY="155.0" text="Normal Class">
+                              <Label layoutX="260.0" layoutY="155.0" text="Normal Class" AnchorPane.leftAnchor="260.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Label>
                               <Label fx:id="availableMovies_specialClass_price" layoutX="601.0" layoutY="110.0" text="SOM 0.0" />
                               <Label fx:id="availableMovies_normalClass_price" layoutX="602.0" layoutY="156.0" text="SOM 0.0" />
-                              <Spinner fx:id="availableMovies_specialClass_quantity" layoutX="430.0" layoutY="106.0" prefHeight="26.0" prefWidth="67.0" />
-                              <Spinner fx:id="availableMovies_normalClass_quantity" layoutX="429.0" layoutY="153.0" prefHeight="26.0" prefWidth="67.0" />
-                              <Button fx:id="availableMovies_buyBtn" layoutX="610.0" layoutY="248.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="84.0" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="Buy" textFill="WHITE" />
-                              <Label layoutX="576.0" layoutY="204.0" text="Total: ">
+                              <Spinner fx:id="availableMovies_specialClass_quantity" layoutX="430.0" layoutY="106.0" onMouseClicked="#getSpinnerValue" prefHeight="26.0" prefWidth="67.0" />
+                              <Spinner fx:id="availableMovies_normalClass_quantity" layoutX="429.0" layoutY="153.0" onMouseClicked="#getSpinnerValue" prefHeight="26.0" prefWidth="67.0" />
+                              <Button fx:id="availableMovies_buyBtn" layoutX="610.0" layoutY="248.0" mnemonicParsing="false" onAction="#buy" prefHeight="29.0" prefWidth="84.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Buy" textFill="WHITE" AnchorPane.bottomAnchor="35.0" />
+                              <Label layoutX="576.0" layoutY="204.0" text="Total: " AnchorPane.leftAnchor="570.0">
                                  <font>
                                     <Font name="System Bold Italic" size="24.0" />
                                  </font>
@@ -290,17 +310,18 @@
                                     <Font size="24.0" />
                                  </font>
                               </Label>
+                              <Button fx:id="availableMovies_clearBtn" layoutX="430.0" layoutY="248.0" mnemonicParsing="false" onAction="#clearPurchaseTicketInfo" prefHeight="29.0" prefWidth="84.0" style="-fx-background-color: rgb(92, 131, 116); -fx-background-radius: 20px;" text="Clear" textFill="WHITE" AnchorPane.bottomAnchor="35.0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="editScreening_form" layoutX="129.0" layoutY="53.0" prefHeight="556.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="editScreening_form" layoutX="129.0" layoutY="53.0" prefHeight="556.0" prefWidth="800.0" style="-fx-background-color: rgb(158, 200, 185);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane layoutX="15.0" layoutY="9.0" prefHeight="530.0" prefWidth="238.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(22, 64, 214); -fx-background-radius: 8px;">
+                        <AnchorPane layoutX="15.0" layoutY="9.0" prefHeight="530.0" prefWidth="238.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: rgb(92, 131, 116); -fx-background-radius: 8px;">
                            <children>
-                              <AnchorPane fx:id="editScreening_imageView" layoutX="42.0" layoutY="26.0" prefHeight="192.0" prefWidth="153.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-radius: 8px;">
+                              <AnchorPane layoutX="42.0" layoutY="26.0" prefHeight="192.0" prefWidth="153.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-radius: 8px;">
                                  <children>
-                                    <ImageView fitHeight="177.0" fitWidth="141.0" layoutX="5.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="editScreening_imageView" fitHeight="177.0" fitWidth="141.0" layoutX="5.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
                               <Label fx:id="editScreening_title" layoutX="96.0" layoutY="260.0" text="Title" textFill="WHITE">
@@ -313,9 +334,9 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="editScreening_current" layoutX="91.0" layoutY="300.0" prefHeight="26.0" prefWidth="117.0" promptText="Choose" style="-fx-background-color: white; -fx-background-radius: 20px;" />
-                              <Button fx:id="editScreening_update" layoutX="25.0" layoutY="404.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="76.0" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="Update" textFill="WHITE" />
-                              <Button fx:id="editScreening_delete" layoutX="126.0" layoutY="403.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="76.0" style="-fx-background-color: rgb(237, 90, 179); -fx-background-radius: 20px;" text="Delete" textFill="WHITE" />
+                              <ComboBox fx:id="editScreening_current" layoutX="91.0" layoutY="300.0" onAction="#comboBox" prefHeight="26.0" prefWidth="117.0" promptText="Choose" style="-fx-background-color: white; -fx-background-radius: 20px;" />
+                              <Button fx:id="editScreening_update" layoutX="25.0" layoutY="404.0" mnemonicParsing="false" onAction="#updateEditScreening" prefHeight="29.0" prefWidth="76.0" style="-fx-background-color: rgb(27, 66, 66); -fx-background-radius: 20px;" text="Update" textFill="WHITE" />
+                              <Button fx:id="editScreening_delete" layoutX="126.0" layoutY="403.0" mnemonicParsing="false" onAction="#clearEditScreening" prefHeight="29.0" prefWidth="76.0" style="-fx-background-color: rgb(27, 66, 66); -fx-background-radius: 20px;" text="Clear" textFill="WHITE" />
                               <Label fx:id="editScreening_label" layoutX="87.0" layoutY="235.0" text="Label" textFill="WHITE">
                                  <font>
                                     <Font name="Beirut Regular" size="18.0" />
@@ -325,12 +346,11 @@
                         </AnchorPane>
                         <AnchorPane layoutX="264.0" layoutY="8.0" prefHeight="530.0" prefWidth="529.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: white; -fx-background-radius: 8px;">
                            <children>
-                              <TextField fx:id="editScreening_search" layoutX="14.0" layoutY="25.0" prefHeight="26.0" prefWidth="240.0" promptText="Search.." style="-fx-background-radius: 0px 10px 0px 0px;" />
-                              <TableView fx:id="editScreening_tableView" layoutX="15.0" layoutY="64.0" prefHeight="460.0" prefWidth="499.0" style="-fx-background-radius: 8px;">
+                              <TableView fx:id="addScreening_tableView" layoutX="15.0" layoutY="9.0" onMouseClicked="#selectEditScreening" prefHeight="513.0" prefWidth="499.0" style="-fx-background-radius: 8px;">
                                  <columns>
                                     <TableColumn fx:id="editScreening_col_movieTitle" prefWidth="150.04949951171875" style="-fx-background-color: rgb(22, 64, 214) rgb(22, 64, 214); &quot; text=&quot;Dashboard&quot; textFill=&quot;#fcfcfc&quot; xmlns=&quot;http: //javafx.com/javafx/21&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; /&gt;;" text="Movie Title:" />
-                                    <TableColumn fx:id="editScreening_col_genre" prefWidth="99.97271728515625" text="Genre:" />
-                                    <TableColumn fx:id="editScreening_col_duration" prefWidth="121.9471435546875" text="Duration:" />
+                                    <TableColumn fx:id="editScreening_col_genre" prefWidth="97.5" text="Genre:" />
+                                    <TableColumn fx:id="editScreening_col_duration" prefWidth="126.0" text="Duration:" />
                                     <TableColumn fx:id="editScreening_col_current" prefWidth="125.5" text="Current:" />
                                  </columns>
                               </TableView>
@@ -338,27 +358,22 @@
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="customers_form" layoutX="278.0" layoutY="89.0" prefHeight="556.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="customers_form" layoutX="278.0" layoutY="89.0" prefHeight="556.0" prefWidth="800.0" style="-fx-background-color: rgb(158, 200, 185);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <AnchorPane layoutX="9.0" layoutY="11.0" prefHeight="530.0" prefWidth="233.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: white; -fx-background-radius: 8px;">
                            <children>
-                              <Button fx:id="customers_clearBtn" layoutX="21.0" layoutY="239.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-radius: 20px; -fx-background-color: rgb(237, 90, 179);" text="Clear" textFill="WHITE" />
-                              <Button fx:id="customers_deleteBtn" layoutX="125.0" layoutY="240.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" style="-fx-background-radius: 20px; -fx-background-color: rgb(237, 90, 179);" text="Delete" textFill="WHITE" />
+                              <Button fx:id="customers_clearBtn" layoutX="21.0" layoutY="239.0" mnemonicParsing="false" onAction="#clearCustomer" prefHeight="26.0" prefWidth="70.0" style="-fx-background-radius: 20px; -fx-background-color: rgb(27, 66, 66);" text="Clear" textFill="WHITE" />
+                              <Button fx:id="customers_deleteBtn" layoutX="125.0" layoutY="240.0" mnemonicParsing="false" onAction="#deleteCustomer" prefHeight="26.0" prefWidth="70.0" style="-fx-background-radius: 20px; -fx-background-color: rgb(27, 66, 66);" text="Delete" textFill="WHITE" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="204.0" prefWidth="231.0" style="-fx-border-radius: 8px 0px 0px 8px; -fx-background-radius: 8px 0px 0px 8px; -fx-border-color: blue; -fx-background-color: rgb(22, 64, 214);">
+                        <AnchorPane layoutX="9.0" layoutY="10.0" prefHeight="204.0" prefWidth="234.0" style="-fx-border-radius: 8px 0px 0px 8px; -fx-background-radius: 8px 0px 0px 8px; -fx-border-color: rgb(9, 38, 53); -fx-background-color: rgb(92, 131, 116);">
                            <children>
                               <Label layoutX="16.0" layoutY="26.0" text="Ticket №:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
                                  <font>
                                     <Font name="Beirut Regular" size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="48.0" layoutY="83.0" text="Genre:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
-                                 <font>
-                                    <Font name="Beirut Regular" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="54.0" layoutY="112.0" text="Date checked:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
+                              <Label layoutX="12.0" layoutY="103.0" text="Date checked:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
                                  <font>
                                     <Font name="Beirut Regular" size="14.0" />
                                  </font>
@@ -368,27 +383,22 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="customers_movieTitle" layoutX="119.0" layoutY="55.0" text="Genre:" textFill="WHITE" AnchorPane.leftAnchor="110.0">
+                              <Label fx:id="customers_movieTitle" layoutX="107.0" layoutY="64.0" text="Genre:" textFill="WHITE" AnchorPane.leftAnchor="110.0">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="customers_genre" layoutX="118.0" layoutY="82.0" text="Date:" textFill="WHITE" AnchorPane.leftAnchor="110.0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="10.0" layoutY="54.0" text="Movie Title:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
+                              <Label layoutX="12.0" layoutY="64.0" text="Movie Title:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
                                  <font>
                                     <Font name="Beirut Regular" size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="customers_date" layoutX="109.0" layoutY="112.0" text="Date:" textFill="WHITE" AnchorPane.leftAnchor="110.0">
+                              <Label fx:id="customers_date" layoutX="116.0" layoutY="103.0" text="Date:" textFill="WHITE" AnchorPane.leftAnchor="110.0">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="5.0" layoutY="144.0" text="Time checked:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
+                              <Label layoutX="12.0" layoutY="144.0" text="Time checked:" textFill="WHITE" AnchorPane.leftAnchor="10.0">
                                  <font>
                                     <Font name="Beirut Regular" size="14.0" />
                                  </font>
@@ -402,14 +412,12 @@
                         </AnchorPane>
                         <AnchorPane layoutX="253.0" layoutY="9.0" prefHeight="533.0" prefWidth="550.0" style="-fx-effect: dropshadow(three-pass-box, rgb(0,0,0,.3), 8,0,0,0); -fx-background-color: white; -fx-background-radius: 8px;">
                            <children>
-                              <TextField fx:id="customers_search" layoutX="14.0" layoutY="25.0" prefHeight="26.0" prefWidth="240.0" promptText="Search.." style="-fx-background-radius: 0px 10px 0px 0px;" />
-                              <TableView layoutX="15.0" layoutY="59.0" prefHeight="465.0" prefWidth="522.0" style="-fx-background-radius: 8px;">
+                              <TableView fx:id="customer_tableView" layoutX="15.0" layoutY="16.0" onMouseClicked="#selectCustomerList" prefHeight="508.0" prefWidth="522.0" style="-fx-background-radius: 8px;">
                                  <columns>
                                     <TableColumn fx:id="customers_col_ticketNumber" prefWidth="85.488037109375" style="-fx-background-color: rgb(22, 64, 214) rgb(22, 64, 214); &quot; text=&quot;Dashboard&quot; textFill=&quot;#fcfcfc&quot; xmlns=&quot;http: //javafx.com/javafx/21&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; /&gt;;" text="Ticket №:" />
-                                    <TableColumn fx:id="customers_col_movieTitle" prefWidth="115.49090576171875" text="Movie Title:" />
-                                    <TableColumn fx:id="customers_col_genre" prefWidth="80.242431640625" text="Genre:" />
-                                    <TableColumn fx:id="customers_col_date" prefWidth="108.0050048828125" text="Date Checked:" />
-                                    <TableColumn fx:id="customers_col_time" prefWidth="131.0" text="Time Checked:" />
+                                    <TableColumn fx:id="customers_col_movieTitle" prefWidth="163.5" text="Movie Title:" />
+                                    <TableColumn fx:id="customers_col_date" prefWidth="141.5" text="Date Checked:" />
+                                    <TableColumn fx:id="customers_col_time" prefWidth="130.5" text="Time Checked:" />
                                  </columns>
                               </TableView>
                            </children>
