@@ -17,13 +17,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+
 import java.io.File;
 import java.net.URL;
 import java.sql.*;
 import java.sql.Date;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.*;
 
 
@@ -89,7 +88,11 @@ public class dashboardController implements Initializable {
 
     @FXML
     private Button availableMovies_buyBtn;
+    @FXML
+    private AnchorPane main_form;
 
+    @FXML
+    private ImageView billboard;
     private ObservableList<moviesData> availableMoviesList;
 
     @FXML
@@ -157,16 +160,16 @@ public class dashboardController implements Initializable {
     private TableColumn<?, ?> customers_col_date;
 
     @FXML
-    private TableColumn<?, ?> customers_col_genre;
+    private TableView<customerData> customer_tableView;
 
     @FXML
-    private TableColumn<?, ?> customers_col_movieTitle;
+    private TableColumn<customerData, String> customers_col_movieTitle;
 
     @FXML
-    private TableColumn<?, ?> customers_col_ticketNumber;
+    private TableColumn<customerData, String> customers_col_ticketNumber;
 
     @FXML
-    private TableColumn<?, ?> customers_col_time;
+    private TableColumn<customerData, String> customers_col_time;
 
     @FXML
     private Label customers_date;
@@ -225,8 +228,6 @@ public class dashboardController implements Initializable {
     @FXML
     private ComboBox<?> editScreening_current;
 
-    @FXML
-    private Button editScreening_delete;
 
     @FXML
     private AnchorPane editScreening_form;
@@ -234,11 +235,6 @@ public class dashboardController implements Initializable {
     @FXML
     private ImageView editScreening_imageView;
 
-    @FXML
-    private Label editScreening_label;
-
-    @FXML
-    private TextField editScreening_search;
 
     @FXML
     private TableView<moviesData> addScreening_tableView;
@@ -246,8 +242,6 @@ public class dashboardController implements Initializable {
     @FXML
     private Label editScreening_title;
 
-    @FXML
-    private Button editScreening_update;
 
     @FXML
     private Button minimize;
@@ -289,11 +283,210 @@ public class dashboardController implements Initializable {
     private int qty1 = 0;
     private int qty2 = 0;
 
+
     private int num;
     private int qty;
 
+    private int totalMovies;
+
+    public int totalAvailableMovies() throws SQLException {
+        String sql = "SELECT COUNT(id) as total_movies FROM movie";
+
+        try (Connection connect = database.connectDb();
+             PreparedStatement prepare = connect.prepareStatement(sql);
+             ResultSet result = prepare.executeQuery()) {
+
+            if (result.next()) {
+                totalMovies = result.getInt("total_movies");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalMovies;
+    }
+
+    public void displayTotalAvailableMovies() throws SQLException {
+        int availableMovies = totalAvailableMovies();
+        dashboard_availableMovies.setText(String.valueOf(availableMovies));
+    }
+
+
+    private double totalIncome;
+    public double totalIncomeToday() throws SQLException {
+        LocalDate localDate = LocalDate.now();
+        java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+
+        String sql = "SELECT SUM(total) as total_income FROM customer WHERE date = ?";
+
+        try (Connection connect = database.connectDb();
+             PreparedStatement prepare = connect.prepareStatement(sql)) {
+
+            prepare.setDate(1, sqlDate);
+
+            try (ResultSet result = prepare.executeQuery()) {
+                if (result.next()) {
+                    totalIncome = result.getDouble("total_income");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalIncome;
+    }
+
+    public void displayTotalIncomeToday() throws SQLException {
+        double todayIncome = totalIncomeToday();
+        dashboard_totalEarnMoney.setText(String.valueOf(todayIncome));
+    }
+
+    private int soldTicket;
+    public void countTicket() throws SQLException {
+        String sql = "SELECT count(id) as ticket_count FROM customer";
+
+        connect = database.connectDb();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                soldTicket = result.getInt("ticket_count");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (result != null) {
+                result.close();
+            }
+            if (prepare != null) {
+                prepare.close();
+            }
+            if (connect != null) {
+                connect.close();
+            }
+        }
+    }
+
+    public void displayTotalSoldTicket() throws SQLException {
+        countTicket();
+        dashboard_totalSoldTicket.setText(String.valueOf(soldTicket));
+
+    }
+
+    public ObservableList<customerData> customerList() throws SQLException {
+        ObservableList<customerData> customerL = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM customer";
+
+        connect = database.connectDb();
+
+        try{
+            customerData customerD;
+
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while(result.next()){
+
+                customerD = new customerData(result.getInt("id")
+                    , result.getString("type")
+                    , result.getString("movie_title")
+                    , result.getInt("quantity")
+                    , result.getDouble("total")
+                    , result.getDate("date")
+                    , result.getTime("time"));
+
+            customerL.add(customerD);
+            }
+
+        }catch(Exception e){e.printStackTrace();}
+
+        return customerL;
+    }
+
+    private ObservableList<customerData> custList;
+    public void showCustomerList() throws SQLException {
+        custList = customerList();
+
+        customers_col_ticketNumber.setCellValueFactory(new PropertyValueFactory<>("id"));
+        customers_col_movieTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        customers_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        customers_col_time.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+        customer_tableView.setItems(custList);
+    }
+
+    public void selectCustomerList(){
+        customerData custD = customer_tableView.getSelectionModel().getSelectedItem();
+        int num = customer_tableView.getSelectionModel().getFocusedIndex();
+
+        if((num - 1)< -1){
+            return;
+        }
+
+        customers_ticketNumber.setText(String.valueOf(custD.getId()));
+        customers_movieTitle.setText(custD.getTitle());
+        customers_date.setText(String.valueOf(custD.getDate()));
+        customers_time.setText(String.valueOf(custD.getTime()));
+    }
+
+    public void deleteCustomer() throws SQLException {
+        String sql = "DELETE FROM customer WHERE id = '" + customers_ticketNumber.getText() + "'";
+
+        connect = database.connectDb();
+
+        try {
+            Alert alert;
+
+            statement = connect.createStatement();
+
+            if(customers_ticketNumber.getText().isEmpty()
+                || customers_movieTitle.getText().isEmpty()
+                || customers_date.getText().isEmpty()
+                || customers_time.getText().isEmpty()) {
+
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please select the customer first.");
+                alert.showAndWait();
+            }else {
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure to delete " + customers_movieTitle.getText() + "?");
+
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if(option.get() == ButtonType.OK){
+                    statement.executeUpdate(sql);
+
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully removed!");
+                    alert.showAndWait();
+
+                    showCustomerList();
+                    clearCustomer();
+                }else{
+                    return;
+                }
+
+            }
+        }catch (Exception e){e.printStackTrace();}
+    }
+    public void clearCustomer(){
+        customers_ticketNumber.setText("");
+        customers_movieTitle.setText("");
+        customers_date.setText("");
+        customers_time.setText("");
+    }
     public void buy() throws SQLException {
-        String sql = "INSERT INTO customer (type,quantity,total,date) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO customer (type,movie_title,quantity,total,date, time) VALUES(?,?,?,?,?,?)";
 
         connect = database.connectDb();
         String type = null;
@@ -309,11 +502,17 @@ public class dashboardController implements Initializable {
 
 
         try{
+            LocalTime localTime = LocalTime.now();
+            Time time = Time.valueOf(localTime);
+
+            qty = qty1 + qty2;
             prepare = connect.prepareStatement(sql);
             prepare.setString(1, type);
-            prepare.setInt(2, qty);
-            prepare.setDouble(3, total);
-            prepare.setDate(4, setDate);
+            prepare.setString(2, availableMovies_ttitle.getText());
+            prepare.setInt(3, qty);
+            prepare.setDouble(4, total);
+            prepare.setDate(5, setDate);
+            prepare.setTime(6, time);
 
 
             Alert alert;
@@ -404,7 +603,7 @@ public class dashboardController implements Initializable {
     public ObservableList<moviesData> availableMoviesList() throws SQLException {
         ObservableList<moviesData> listAvMovies = FXCollections.observableArrayList();
 
-        String sql = "SELECT * FROM movie";
+        String sql = "SELECT * FROM movie WHERE current = ' Showing'";
         connect = database.connectDb();
 
         try {
@@ -526,6 +725,8 @@ public class dashboardController implements Initializable {
                 alert.setHeaderText(null);
                 alert.setContentText("Successfully updated!");
                 alert.showAndWait();
+
+                availableMoviesList = availableMoviesList();
 
                 showEditScreening();
                 clearEditScreening();
@@ -696,7 +897,7 @@ public class dashboardController implements Initializable {
                                 addMovies_duration.getText(),
                                 uri,
                                 sqlDate,
-                                "Showing"));
+                                " Showing"));
 
                         addMovies_tableView.setItems(listAddMovies);
                         clearAddMovieList();
@@ -928,19 +1129,26 @@ public class dashboardController implements Initializable {
         }
     }
 
-    public void switchForm(ActionEvent event) {
+    public void switchForm(ActionEvent event) throws SQLException {
         if (event.getSource() == dashboard_btn) {
             dashboard_form.setVisible(true);
             addMovies_form.setVisible(false);
             availableMovies_form.setVisible(false);
             editScreening_form.setVisible(false);
             customers_form.setVisible(false);
+
+            displayTotalSoldTicket();
+            displayTotalIncomeToday();
+            displaytotalAvailableMovies();
+
         }if (event.getSource() == addMovies_btn) {
             dashboard_form.setVisible(false);
             addMovies_form.setVisible(true);
             availableMovies_form.setVisible(false);
             editScreening_form.setVisible(false);
             customers_form.setVisible(false);
+
+            showAddMoviesList();
         }
         if (event.getSource() == availableMovies_btn) {
             dashboard_form.setVisible(false);
@@ -948,6 +1156,8 @@ public class dashboardController implements Initializable {
             availableMovies_form.setVisible(true);
             editScreening_form.setVisible(false);
             customers_form.setVisible(false);
+
+            showAvailableMovies();
         }
         if (event.getSource() == editScreening_btn) {
             dashboard_form.setVisible(false);
@@ -955,13 +1165,22 @@ public class dashboardController implements Initializable {
             availableMovies_form.setVisible(false);
             editScreening_form.setVisible(true);
             customers_form.setVisible(false);
+
+            showEditScreening();
+
         } else if (event.getSource() == customers_btn) {
             dashboard_form.setVisible(false);
             addMovies_form.setVisible(false);
             availableMovies_form.setVisible(false);
             editScreening_form.setVisible(false);
             customers_form.setVisible(true);
+
+            showCustomerList();
         }
+
+    }
+
+    private void displaytotalAvailableMovies() {
     }
 
     public void displayUsername() {
@@ -979,6 +1198,8 @@ public class dashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
         try {
             displayUsername();
 
@@ -993,6 +1214,10 @@ public class dashboardController implements Initializable {
             comboBox();
             showSpinnerValue();
             getSpinnerValue();
+            showCustomerList();
+            displayTotalSoldTicket();
+            displayTotalIncomeToday();
+            displayTotalAvailableMovies();
 
         } catch (Exception e) {
             e.printStackTrace();
